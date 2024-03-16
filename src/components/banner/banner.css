@@ -1,0 +1,19 @@
+/* Banner.css */
+.jumbotron {
+  padding: 2rem 1rem; /* Adjust the padding as needed */
+  margin-bottom: 2rem; /* Provides space below the jumbotron */
+  background-color: #c2c8c2; /* The hexadecimal color code for the banner background */
+  border-radius: 0.3rem; /* Optional: rounds the corners */
+}
+  
+  .jumbotron h1 {
+    font-size: 2.5rem; /* Large font size for the main headline */
+    margin-bottom: 1rem; /* Space below the headline */
+  }
+  
+  .jumbotron p {
+    font-size: 1.2rem; /* Slightly larger font size for the tagline */
+  }
+  
+  /* Additional media query adjustments for responsiveness can be placed here */
+  

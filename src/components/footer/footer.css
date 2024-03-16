@@ -1,0 +1,51 @@
+.footer {
+    color: white;
+    background-color: #343a40; /* Bootstrap dark background */
+    clear: both;
+    text-align: left;
+    padding: 1rem 0;
+  }
+  
+  .footer-brand,
+  .footer-nav,
+  .footer-social,
+  .footer-copywright,
+  .footer-links {
+    padding: 0.5rem 0;
+  }
+  
+  .footer-nav .nav-link,
+  .footer-social .nav-link {
+    color: white;
+    transition: color 0.3s;
+  }
+  
+  .footer-nav .nav-link:hover,
+  .footer-social .nav-link:hover {
+    color: #999;
+    text-decoration: none;
+  }
+  
+  .footer .fab {
+    font-size: 1.5rem; /* Increase the size of font awesome icons */
+  }
+  
+  .footer-copywright,
+  .footer-links {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .footer-nav,
+    .footer-social {
+      text-align: center;
+    }
+  
+    .footer-copywright,
+    .footer-links {
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+  }
+  

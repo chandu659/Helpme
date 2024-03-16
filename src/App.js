@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import NavBar from './components/navbar/navbar';
+import Footer from './components/footer/footer';
+import Banner from './components/banner/banner';
+import Tiles from './components/tiles/tiles';
+import Form from './components/form/form';
+// Import other components/pages you need for routing
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={
+          <>
+            <Banner />
+            <Tiles />
+          </>
+        } />
+        <Route path="/form" element={<Form />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 

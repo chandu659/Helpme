@@ -1,0 +1,40 @@
+.custom-form {
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 2rem; /* Add some padding */
+    border-radius: 8px; /* Slightly rounded corners for the form */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* A subtle shadow */
+    max-width: 800px; /* Set a max-width for larger screens */
+    margin: 2rem auto; /* Center the form on the page */
+  }
+  
+  .custom-form .form-group {
+    margin-bottom: 1rem; /* Space out form groups */
+  }
+  
+  .custom-form .form-label {
+    font-weight: bold; /* Make labels bold */
+  }
+  
+  .custom-form .form-control {
+    border-radius: 4px; /* Slightly rounded borders on inputs */
+  }
+  
+  .custom-form .form-check-label {
+    user-select: none; /* Prevent text selection on the checkbox label */
+  }
+  
+  .custom-form .btn {
+    width: 100%; /* Full width button */
+    padding: 0.75rem 1rem; /* Larger button padding */
+    font-size: 1.1rem; /* Slightly larger font size */
+  }
+  
+  @media (max-width: 768px) {
+    .custom-form {
+      padding: 1rem;
+    }
+    .custom-form .btn {
+      width: auto; /* Auto width for smaller devices */
+    }
+  }
+  
