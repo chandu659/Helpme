@@ -1,16 +1,36 @@
 import mongoose from 'mongoose';
 
-const FormSchema = mongoose.Schema({
-    Pincode: Number,
-    City:String,
-    State:String,
-    HelpType:String,
-    Subject:String,
-    Description:String,
-    Comments:String
+// const LocationSchema = new mongoose.Schema({
+//   latitude: Number,
+//   longitude: Number,
+// });
+
+const FileDataSchema = new mongoose.Schema({
+  filename: String,
+  filepath: String,
+  mimetype: String
 });
 
-// Create a model from the schema
+const CommentSchema = new mongoose.Schema({
+  text: { type: String, required: true },
+  datePosted: { type: Date, default: Date.now },
+});
+
+const FormSchema = new mongoose.Schema({
+  Pincode: Number,
+  City: String,
+  State: String,
+  HelpType: String,
+  Subject: String,
+  Description: String,
+  Comments: [CommentSchema], // This defines Comments as an array of CommentSchema
+  Location: {
+    latitude:Number,
+    longitude:Number,
+  },
+  FileData: FileDataSchema
+});
+
 const Form = mongoose.model('Form', FormSchema);
 
 export default Form;
