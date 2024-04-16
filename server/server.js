@@ -2,28 +2,46 @@ import express from 'express';
 import multer from 'multer';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import Form from './schema.js'; // Ensure the path is correct
+import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
-import Form from './schema.js'; // Make sure this path is correct
-import path from 'path'; // Import path module
-import fs from 'fs'; // Import fs module
+import { createClient } from 'redis';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
+
 
 const app = express();
-const port = process.env.PORT || 8001;
+const port = process.env.PORT || 8001; // Default to 8001 if environment variable not set
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config();
+
+
+// Redis client setup with direct connection string (no TLS)
+
+const redisClient = createClient({
+    password: 'tLHVXpYISsJ0YG0CxRL66otOTz3Ov64G',
+    socket: {
+        host: 'redis-19885.c232.us-east-1-2.ec2.cloud.redislabs.com',
+        port: 19885
+    }
+});
+
+redisClient.on('connect', () => console.log('Connected to Redis'));
+redisClient.on('error', (err) => console.error('Redis Client Error', err));
+
+redisClient.connect().catch(console.error);
 
 // Define storage for multer
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     const uploadsDir = path.join(__dirname, 'uploads');
-    fs.mkdirSync(uploadsDir, { recursive: true }); // Ensure the uploads directory exists
+    fs.mkdirSync(uploadsDir, { recursive: true }); // Ensure directory exists
     cb(null, uploadsDir);
   },
   filename: function(req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Use Date.now() to make filenames unique
+    cb(null, Date.now() + '-' + file.originalname); // Unique filenames
   }
 });
 
@@ -38,13 +56,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static('uploads')); 
+app.use('/files', express.static(path.join(__dirname, 'uploads')));
 
 app.post('/submit-form', upload.single('FileData'), async (req, res) => {
   const { filename, path: filepath, mimetype } = req.file || {};
   const formEntryData = { ...req.body, FileData: { filename, filepath, mimetype } };
-  console.log(req.file); // chek the file info
-  console.log(req.body); // check the non-file form data
 
   try {
     const newFormEntry = new Form(formEntryData);
@@ -56,33 +72,125 @@ app.post('/submit-form', upload.single('FileData'), async (req, res) => {
   }
 });
 
-// Serving file
-app.get("/file/:filename", (req, res) => {
-  const filename = req.params.filename;
-  const filepath = path.join(__dirname, 'uploads', filename);
-  res.sendFile(filepath, err => {
-    if (err) {
-      console.error("Error sending file:", err);
-      if (!res.headersSent) {
-        res.status(500).send("Error fetching file");
-      }
-    }
-  });
-});
+//cache search data
+const cache = async (req, res, next) => {
+  const pincode = req.query.pincode;
+  const query = pincode ? { HelpType: 'education', Pincode: pincode } : { HelpType: 'education' };
 
-// get education 
-app.get("/education", async (req, res) => {
   try {
-    const entries = await Form.find({ HelpType: 'education' });
-    res.status(200).json(entries);
+    const cacheKey = JSON.stringify(query); // Unique cache key for each query
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      console.log('Serving from cache');
+      return res.status(200).json(JSON.parse(cachedData));
+    }
+    res.locals.cacheKey = cacheKey;
+    next();
   } catch (error) {
-    console.error("Error fetching education data:", error);
-    res.status(500).send("Error fetching education data");
+    console.error('Redis error:', error);
+    next(); 
+  }
+};
+
+
+//education
+app.get('/education', cache, async (req, res) => {
+  const { pincode } = req.query;
+  let query = { HelpType: 'education' }; // Base query for education entries
+
+  if (pincode) {
+      query.Pincode = pincode; // Adjust query to filter by pincode if provided
+  }
+
+  try {
+      // Construct a unique cache key using the query parameters
+      const cacheKey = 'education_' + (pincode ? `pincode_${pincode}` : 'all');
+
+      // First, try to get the results from cache
+      const cachedResults = await redisClient.get(cacheKey);
+      if (cachedResults) {
+          console.log('Serving from cache');
+          return res.status(200).json(JSON.parse(cachedResults));
+      }
+      // If not in cache, fetch from the database
+      const entries = await Form.find(query);
+      if (entries.length) {
+          // Cache the database query results if not empty
+          await redisClient.setEx(cacheKey, 120, JSON.stringify(entries));
+          console.log('Cache miss - Data fetched from database and cached');
+      }
+      res.status(200).json(entries);
+  } catch (error) {
+      console.error('Error fetching education data:', error);
+      res.status(500).send('Error fetching education data');
   }
 });
 
-// comment section
+// post comments in edu
 app.post('/education/:id/comment', async (req, res) => {
+  const { id } = req.params;
+  const formEntry = await Form.findById(id);
+  if (!formEntry) {
+    return res.status(404).send('Entry not found');
+  }
+  formEntry.Comments.push(req.body);
+  await formEntry.save();
+  return res.status(201).json(formEntry.Comments.pop());  // Send back the added comment
+});
+
+
+// delete comments in edu
+app.delete('/education/:postId/comment/:commentId', async (req, res) => {
+  const { postId, commentId } = req.params;
+  const formEntry = await Form.findById(postId);
+  if (!formEntry) {
+    return res.status(404).send('Post not found');
+  }
+  const oldComments = formEntry.Comments.length;
+  formEntry.Comments = formEntry.Comments.filter(comment => comment._id.toString() !== commentId);
+  if (formEntry.Comments.length === oldComments) {
+    return res.status(404).send('Comment not found');
+  }
+  await formEntry.save();
+  return res.status(200).send('Comment deleted successfully');
+});
+
+
+// carpooling
+app.get('/carpooling', cache, async (req, res) => {
+  const { pincode } = req.query;
+  let query = { HelpType: 'carpooling' }; // Base query for education entries
+
+  if (pincode) {
+      query.Pincode = pincode; // Adjust query to filter by pincode if provided
+  }
+
+  try {
+      // Construct a unique cache key using the query parameters
+      const cacheKey = 'carpooling_' + (pincode ? `pincode_${pincode}` : 'all');
+
+      // First, try to get the results from cache
+      const cachedResults = await redisClient.get(cacheKey);
+      if (cachedResults) {
+          console.log('Serving from cache');
+          return res.status(200).json(JSON.parse(cachedResults));
+      }
+      // If not in cache, fetch from the database
+      const entries = await Form.find(query);
+      if (entries.length) {
+          // Cache the database query results if not empty
+          await redisClient.setEx(cacheKey, 120, JSON.stringify(entries));
+          console.log('Cache miss - Data fetched from database and cached');
+      }
+      res.status(200).json(entries);
+  } catch (error) {
+      console.error("Error fetching education data:", error);
+      res.status(500).send("Error fetching education data");
+  }
+});
+
+//post comment in carpooling  form
+app.post('/carpooling/:id/comment', async (req, res) => {
   try {
     const formEntry = await Form.findById(req.params.id);
 
@@ -101,8 +209,9 @@ app.post('/education/:id/comment', async (req, res) => {
   }
 });
 
-// delete the comments 
-app.delete('/education/:postId/comment/:commentId', async (req, res) => {
+
+// delete the comments in carpooling section
+app.delete('/carpooling/:postId/comment/:commentId', async (req, res) => {
   try {
     const { postId, commentId } = req.params;
     const formEntry = await Form.findById(postId);
@@ -111,8 +220,10 @@ app.delete('/education/:postId/comment/:commentId', async (req, res) => {
       return res.status(404).send('Post not found');
     }
 
+    // Filter out the comment to be deleted
     formEntry.Comments = formEntry.Comments.filter(comment => comment._id.toString() !== commentId);
 
+    // Save the updated document to permanently remove the comment
     await formEntry.save();
     res.status(200).send('Comment deleted successfully');
   } catch (error) {
@@ -122,16 +233,20 @@ app.delete('/education/:postId/comment/:commentId', async (req, res) => {
 });
 
 
-// get carpooling
-app.get("/carpooling", async (req, res) => {
-  try {
-    const entries = await Form.find({ HelpType:'carpooling' });
-    res.status(200).json(entries);
-  } catch (error) {
-    console.error("Error fetching carpooling data:", error);
-    res.status(500).send("Error fetching carpooling data");
+//get filename
+app.get("/file/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const filepath = path.join(__dirname, 'uploads', filename);
+
+  if (fs.existsSync(filepath)) {
+    res.setHeader('Content-Disposition', 'attachment; filename="' + filename + '"');
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.sendFile(filepath);
+  } else {
+    res.status(404).send("File not found");
   }
 });
 
-
-app.listen(port, () => console.log(`Listening on localhost: ${port}`));
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

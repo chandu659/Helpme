@@ -1,10 +1,5 @@
 import mongoose from 'mongoose';
 
-// const LocationSchema = new mongoose.Schema({
-//   latitude: Number,
-//   longitude: Number,
-// });
-
 const FileDataSchema = new mongoose.Schema({
   filename: String,
   filepath: String,
