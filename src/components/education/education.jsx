@@ -4,6 +4,7 @@ import './education.css'; // Ensure this is the correct path to your stylesheet
 
 export function Education() {
   const [data, setData] = useState([]);
+  const [searchPincode, setSearchPincode] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +17,16 @@ export function Education() {
     };
     fetchData();
   }, []);
+
+  //filter by pincode
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8001/education?pincode=${searchPincode}`);;
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching filtered education data:', error);
+    }
+  };
 
   const addComment = async (postId, commentText) => {
     try {
@@ -45,6 +56,16 @@ export function Education() {
 
   return (
     <div>
+       <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Filter by Pincode"
+          value={searchPincode}
+          onChange={(e) => setSearchPincode(e.target.value)}
+        />
+        <button className="search-button" onClick={handleSearch}>Search</button>
+      </div>
       {data.length > 0 ? (
         data.map((item) => (
           <div className="service-entry" key={item._id}>
@@ -56,14 +77,23 @@ export function Education() {
                 {item.City}, {item.State} {item.Pincode}
               </address>
               {item.Location && (
-                <p>
-                  Location: Latitude {item.Location.latitude.toFixed(6)}, Longitude {item.Location.longitude.toFixed(6)}
-                </p>
+                <div className="map-container">
+                  <iframe
+                    title={`Location of ${item.Subject}`} 
+                    width="60%"
+                    height="200"
+                    style={{ border: 0 }}
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps?q=${item.Location.latitude},${item.Location.longitude}&z=15&output=embed`}
+                    allowFullScreen>
+                  </iframe>
+                </div>
               )}
               {item.FileData && (
-                <a href={`http://localhost:8001/files/${item._id}`} download>
-                  Download File
-                </a>
+                <a href={`http://localhost:8001/files/${item.FileData.filename}`}
+                download={item.FileData.filename}>
+               Download File
+             </a>
               )}
             </div>
             <div className="comments-container">
@@ -87,17 +117,23 @@ export function Education() {
                   e.preventDefault();
                   const commentText = e.target.elements.commentText.value;
                   addComment(item._id, commentText);
-                  e.target.elements.commentText.value = ''; // Clear input after submission
+                  e.target.elements.commentText.value = ''; 
                 }}>
-                  <input type="text" name="commentText" required placeholder="Leave a comment" />
-                  <button type="submit">Add Comment</button>
+                  <input
+                    type="text"
+                    name="commentText"
+                    required
+                    placeholder="Leave a comment"
+                    className="comment-input"
+                  />
+                  <button type="submit" className="comment-button">Add Comment</button>
                 </form>
               </div>
             </div>
           </div>
         ))
       ) : (
-        <p>No education data available.</p>
+        <p>No carpooling data available.</p>
       )}
     </div>
   );
