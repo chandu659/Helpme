@@ -1,50 +1,39 @@
 .resource-tile {
-    margin: 1rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-img-top {
-    width: 80px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin: 1rem auto; /* Center image */
-  }
-  
-  .card-title {
-    color: #333; /* Dark text for visibility */
-    margin-top: 1rem; /* Space above title */
-  }
-  
-  .card-text {
-    color: #666; /* Lighter text for the description */
-    margin-bottom: 1rem; /* Space below text */
-  }
-  
-  .card {
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px); /* Slight raise effect on hover */
-    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
-  }
+  margin: 1.5rem; 
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15); 
+}
 
-  .resource-tile .card {
-    margin: 1rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    padding: 2rem; /* Increased padding */
-    min-height: 300px; /* Or any other value that suits your design */
-  }
+.card {
+  padding: 2rem;
+  transition: all 0.3s ease-in-out;
+}
 
-  .card-img-top {
-    width: 80px; /* Adjust size as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin: 0 auto 2rem; /* Increased bottom margin */
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2); 
+}
+
+.card-img-top {
+  width: 120px; 
+  height: auto;
+  margin: 0 auto 2rem; 
+}
+
+.card-title {
+  font-size: 1.5rem; 
+  color: #222; 
+  margin-top: 1rem; 
+}
+
+.card-text {
+  font-size: 1rem; 
+  color: #555; 
+  margin-bottom: 1rem;
+}
+
+
+@media (max-width: 768px) {
+  .resource-tile {
+    margin-bottom: 2.5rem; 
   }
-  
-  /* Ensure you have proper responsiveness for smaller screens */
-  @media (max-width: 768px) {
-    .resource-tile {
-      margin-bottom: 2rem;
-    }
-  }
-  
+}

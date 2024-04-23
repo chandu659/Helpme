@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './education.css'; // Ensure this is the correct path to your stylesheet
+import './education.css'; 
 
 export function Education() {
   const [data, setData] = useState([]);

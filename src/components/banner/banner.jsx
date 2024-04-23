@@ -11,11 +11,11 @@ const Banner = () => {
   };
 
   return (
-    <Jumbotron fluid className="text-center banner-background">
+    <Jumbotron fluid className="text-center banner-modern">
       <Container>
         <h1>Get Your Help Here</h1>
         <p className="lead">Post your query here to get helped</p>
-        <Button variant="primary" size="lg" onClick={handlePostClick}>Post</Button>
+        <Button variant="outline-light" size="lg" onClick={handlePostClick}>Post</Button>
       </Container>
     </Jumbotron>
   );

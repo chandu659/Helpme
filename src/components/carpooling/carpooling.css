@@ -23,15 +23,15 @@
   
   .comments-header {
     font-weight: 600;
-    margin-bottom: 10px; /* Reduced margin */
+    margin-bottom: 10px;
     font-size: 1.2em;
     color: #333;
   }
   
   .comment {
-    padding: 5px 0; /* Reduced vertical padding */
-    margin-bottom: 0; /* No extra space between comments */
-    border-bottom: 1px solid #eaeaea; /* Subtle line for separation */
+    padding: 5px 0;
+    margin-bottom: 0; 
+    border-bottom: 1px solid #eaeaea; 
     font-size: 0.9em;
     color: #555;
   }
@@ -43,16 +43,16 @@
   }
   
   .comment-form input {
-    padding: 6px 12px; /* Smaller padding for a smaller button */
-    font-size: 0.8em; /* Smaller font size for the input and button */
+    padding: 6px 12px; 
+    font-size: 0.8em; 
     border-radius: 20px;
     margin-right: 8px;
   }
  
   .comment-form button {
-    margin-left: 20px; /* Adjust the value as needed */
-    padding: 6px 12px; /* Smaller padding for a smaller button */
-    font-size: 0.8em; /* Smaller font size for the input and button */
+    margin-left: 20px; 
+    padding: 6px 12px; 
+    font-size: 0.8em; 
     border-radius: 40px;
   }
   
@@ -64,7 +64,7 @@
     cursor: pointer;
     font-weight: 500;
     padding: 6px 15px;
-    border-radius: 40px; /* Adjust padding to make the button smaller */
+    border-radius: 40px; 
   }
   
   .comment-form button:hover {
@@ -91,31 +91,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* Adjust to desired space */
-    margin-bottom: 20px; /* Adjust to desired space */
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   
   .search-input {
     border: 1px solid #ccc;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px;
     padding: 10px 20px;
-    margin-right: 10px; /* Space between input and button */
-    outline: none; /* Removes the outline */
-    width: 50%; /* Adjust to desired width */
+    margin-right: 10px; 
+    outline: none; 
+    width: 50%; 
   }
   
   .search-button {
     padding: 10px 20px;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px; 
     border: none;
-    background-color: #5cb85c; /* Button color */
+    background-color: #5cb85c; 
     color: white;
     cursor: pointer;
     font-weight: bold;
   }
   
   .search-button:hover {
-    background-color: #4cae4c; /* Darker shade on hover */
+    background-color: #4cae4c; 
   }
   
   

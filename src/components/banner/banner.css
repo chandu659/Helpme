@@ -1,19 +1,43 @@
-/* Banner.css */
-.jumbotron {
-  padding: 2rem 1rem; /* Adjust the padding as needed */
-  margin-bottom: 2rem; /* Provides space below the jumbotron */
-  background-color: #c2c8c2; /* The hexadecimal color code for the banner background */
-  border-radius: 0.3rem; /* Optional: rounds the corners */
+.banner-modern {
+  padding: 4rem 1rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #6dcebe 0%, #6a85b6 100%);
+  color: #ffffff; 
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2); 
 }
-  
-  .jumbotron h1 {
-    font-size: 2.5rem; /* Large font size for the main headline */
-    margin-bottom: 1rem; /* Space below the headline */
+
+.banner-modern h1 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700; 
+  font-size: 3rem; 
+  margin-bottom: 2rem;
+}
+
+.banner-modern p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+}
+
+.banner-modern .btn {
+  font-weight: 500;
+  padding: 0.75rem 1.5rem; 
+  border: none;
+  background-color: #ff4081;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.banner-modern .btn:hover {
+  background-color: #e83170;
+}
+
+
+@media (max-width: 768px) {
+  .banner-modern h1 {
+    font-size: 2.5rem; 
   }
-  
-  .jumbotron p {
-    font-size: 1.2rem; /* Slightly larger font size for the tagline */
+
+  .banner-modern p {
+    font-size: 1.1rem; 
   }
-  
-  /* Additional media query adjustments for responsiveness can be placed here */
-  
+}

@@ -1,6 +1,6 @@
 .footer {
     color: white;
-    background-color: #343a40; /* Bootstrap dark background */
+    background-color: #343a40; 
     clear: both;
     text-align: left;
     padding: 1rem 0;
@@ -27,7 +27,7 @@
   }
   
   .footer .fab {
-    font-size: 1.5rem; /* Increase the size of font awesome icons */
+    font-size: 1.5rem; 
   }
   
   .footer-copywright,

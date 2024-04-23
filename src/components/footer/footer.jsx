@@ -9,7 +9,7 @@ const Footer = () => {
         <Row>
           <Col md={4} className="footer-brand">
             <h5>Help Me</h5>
-            <p>Add few lines here.</p>
+            <p>Making help Possible through internet.</p>
           </Col>
           <Col md={4} className="footer-nav">
             <Nav className="flex-column">

@@ -1,32 +1,32 @@
 .custom-form {
-    background-color: #f8f9fa; /* Light gray background */
-    padding: 2rem; /* Add some padding */
-    border-radius: 8px; /* Slightly rounded corners for the form */
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* A subtle shadow */
-    max-width: 800px; /* Set a max-width for larger screens */
-    margin: 2rem auto; /* Center the form on the page */
+    background-color: #f8f9fa; 
+    padding: 2rem; 
+    border-radius: 8px; 
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); 
+    max-width: 800px; 
+    margin: 2rem auto; 
   }
   
   .custom-form .form-group {
-    margin-bottom: 1rem; /* Space out form groups */
+    margin-bottom: 1rem;
   }
   
   .custom-form .form-label {
-    font-weight: bold; /* Make labels bold */
+    font-weight: bold; 
   }
   
   .custom-form .form-control {
-    border-radius: 4px; /* Slightly rounded borders on inputs */
+    border-radius: 4px; 
   }
   
   .custom-form .form-check-label {
-    user-select: none; /* Prevent text selection on the checkbox label */
+    user-select: none; 
   }
   
   .custom-form .btn {
-    width: 100%; /* Full width button */
-    padding: 0.75rem 1rem; /* Larger button padding */
-    font-size: 1.1rem; /* Slightly larger font size */
+    width: 100%; 
+    padding: 0.75rem 1rem; 
+    font-size: 1.1rem; 
   }
   
   @media (max-width: 768px) {
@@ -34,7 +34,7 @@
       padding: 1rem;
     }
     .custom-form .btn {
-      width: auto; /* Auto width for smaller devices */
+      width: auto; 
     }
   }
   
