@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import Form from './schema.js'; // Ensure the path is correct
+import Form from './schema.js'; 
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
@@ -10,22 +10,18 @@ import { createClient } from 'redis';
 import { fileURLToPath } from 'url';
 
 
-
 const app = express();
-const port = process.env.PORT || 8001; // Default to 8001 if environment variable not set
+const port = process.env.PORT || 8001; 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 
 
-// Redis client setup with direct connection string (no TLS)
+// Redis client setup with direct connection 
 
 const redisClient = createClient({
-    password: 'tLHVXpYISsJ0YG0CxRL66otOTz3Ov64G',
-    socket: {
-        host: 'redis-19885.c232.us-east-1-2.ec2.cloud.redislabs.com',
-        port: 19885
-    }
+    host:'localhost',
+    port:6379
 });
 
 redisClient.on('connect', () => console.log('Connected to Redis'));
@@ -37,11 +33,11 @@ redisClient.connect().catch(console.error);
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     const uploadsDir = path.join(__dirname, 'uploads');
-    fs.mkdirSync(uploadsDir, { recursive: true }); // Ensure directory exists
+    fs.mkdirSync(uploadsDir, { recursive: true }); 
     cb(null, uploadsDir);
   },
   filename: function(req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Unique filenames
+    cb(null, Date.now() + '-' + file.originalname);
   }
 });
 
@@ -72,13 +68,14 @@ app.post('/submit-form', upload.single('FileData'), async (req, res) => {
   }
 });
 
+
 //cache search data
 const cache = async (req, res, next) => {
   const pincode = req.query.pincode;
   const query = pincode ? { HelpType: 'education', Pincode: pincode } : { HelpType: 'education' };
 
   try {
-    const cacheKey = JSON.stringify(query); // Unique cache key for each query
+    const cacheKey = JSON.stringify(query); 
     const cachedData = await redisClient.get(cacheKey);
     if (cachedData) {
       console.log('Serving from cache');
@@ -96,17 +93,17 @@ const cache = async (req, res, next) => {
 //education
 app.get('/education', cache, async (req, res) => {
   const { pincode } = req.query;
-  let query = { HelpType: 'education' }; // Base query for education entries
+  let query = { HelpType: 'education' }; 
 
   if (pincode) {
-      query.Pincode = pincode; // Adjust query to filter by pincode if provided
+      query.Pincode = pincode; 
   }
 
   try {
-      // Construct a unique cache key using the query parameters
+      // create unique for mapping and retriving 
       const cacheKey = 'education_' + (pincode ? `pincode_${pincode}` : 'all');
 
-      // First, try to get the results from cache
+      //Get cache from redis
       const cachedResults = await redisClient.get(cacheKey);
       if (cachedResults) {
           console.log('Serving from cache');
@@ -159,10 +156,10 @@ app.delete('/education/:postId/comment/:commentId', async (req, res) => {
 // carpooling
 app.get('/carpooling', cache, async (req, res) => {
   const { pincode } = req.query;
-  let query = { HelpType: 'carpooling' }; // Base query for education entries
+  let query = { HelpType: 'carpooling' }; 
 
   if (pincode) {
-      query.Pincode = pincode; // Adjust query to filter by pincode if provided
+      query.Pincode = pincode; 
   }
 
   try {
