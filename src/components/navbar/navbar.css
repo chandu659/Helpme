@@ -15,11 +15,11 @@
 }
 
 .modern-link:hover, .modern-link:focus {
-  color: #007bff; /* Bootstrap primary color */
+  color: #007bff; 
   text-decoration: none;
 }
 
-/* Responsive design for smaller screens */
+
 @media (max-width: 991px) {
   .modern-navbar .navbar-brand-modern {
     margin-left: 15px;

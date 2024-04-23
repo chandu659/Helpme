@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import '../footer/footer.css'; // Make sure to create a Footer.css file for custom styles
+import '../footer/footer.css';
 
 const Footer = () => {
   return (
@@ -8,7 +8,7 @@ const Footer = () => {
       <Container>
         <Row>
           <Col md={4} className="footer-brand">
-            <h5>Help Me</h5>
+            <h5>Help</h5>
             <p>Making help Possible through internet.</p>
           </Col>
           <Col md={4} className="footer-nav">
@@ -32,7 +32,7 @@ const Footer = () => {
         </Row>
         <Row>
           <Col className="footer-copywright">
-            <p>© 2021 Copyright: Help Me</p>
+            <p>© 2021 Copyright: Help</p>
           </Col>
         </Row>
       </Container>
