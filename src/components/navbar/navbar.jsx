@@ -6,7 +6,7 @@ import './navbar.css';
 
 function NavBar() {
   return (
-    <Navbar bg="light" variant="light" expand="lg" className="modern-navbar">
+    <Navbar className="modern-navbar">
       <Navbar.Brand href="#home" className="navbar-brand-modern">
         <img
           src="/images/helpme-modern.jpg"

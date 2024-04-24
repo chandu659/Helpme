@@ -1,31 +1,41 @@
+
 .modern-navbar {
-  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  background-color: #FFA2B6;
+  padding: 10px; 
 }
 
 .navbar-brand-modern {
-  filter: grayscale(100%) brightness(150%);
+  color: white;
+  font-size: 1.5em; 
+  font-weight: bold; 
 }
+
 
 .modern-link {
-  color: #333;
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: 16px;
-  transition: color 0.3s ease;
-}
-
-.modern-link:hover, .modern-link:focus {
-  color: #007bff; 
-  text-decoration: none;
+  color: white; 
+  margin-right: 15px; 
+  text-transform: uppercase; 
+  font-weight: 600; 
+  transition: color 0.3s; 
 }
 
 
-@media (max-width: 991px) {
-  .modern-navbar .navbar-brand-modern {
-    margin-left: 15px;
-  }
+.modern-link:hover {
+  color: #f0f0f0; 
+  text-decoration: none; 
+}
 
-  .navbar-collapse {
-    margin-top: 10px;
-  }
+
+.navbar-toggler {
+  border-color: white; 
+}
+
+
+.navbar-toggler-icon {
+  background-color: white; 
+}
+
+
+.navbar-collapse {
+  justify-content: flex-end; 
 }
