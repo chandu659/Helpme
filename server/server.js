@@ -9,16 +9,18 @@ import dotenv from 'dotenv';
 import { createClient } from 'redis';
 import { fileURLToPath } from 'url';
 
-
 const app = express();
 const port = process.env.PORT || 8001; 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true })); 
+
+
 
 // Redis client setup with direct connection 
-
 const redisClient = createClient({
     host:'localhost',
     port:6379
@@ -54,9 +56,25 @@ app.use(express.json());
 app.use(cors());
 app.use('/files', express.static(path.join(__dirname, 'uploads')));
 
+//post data 
 app.post('/submit-form', upload.single('FileData'), async (req, res) => {
   const { filename, path: filepath, mimetype } = req.file || {};
-  const formEntryData = { ...req.body, FileData: { filename, filepath, mimetype } };
+  const { Location, ...otherFields } = req.body;
+
+  let parsedLocation = null;
+  if (Location) {
+    try {
+      parsedLocation = JSON.parse(Location);
+    } catch (error) {
+      console.error('Error parsing location:', error);
+    }
+  }
+
+  const formEntryData = {
+    ...otherFields,
+    FileData: { filename, filepath, mimetype },
+    Location: parsedLocation,
+  };
 
   try {
     const newFormEntry = new Form(formEntryData);
@@ -67,6 +85,7 @@ app.post('/submit-form', upload.single('FileData'), async (req, res) => {
     res.status(500).send('Error saving form data and file');
   }
 });
+
 
 
 //cache search data

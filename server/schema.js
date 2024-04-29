@@ -20,8 +20,8 @@ const FormSchema = new mongoose.Schema({
   Description: String,
   Comments: [CommentSchema], // This defines Comments as an array of CommentSchema
   Location: {
-    latitude:Number,
-    longitude:Number,
+    latitude:{type:Number},
+    longitude:{type:Number},
   },
   FileData: FileDataSchema
 });
