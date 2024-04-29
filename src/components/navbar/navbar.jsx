@@ -9,9 +9,9 @@ function NavBar() {
     <Navbar className="modern-navbar">
       <Navbar.Brand href="#home" className="navbar-brand-modern">
         <img
-          src="/images/helpme-modern.jpg"
-          width="120" 
-          height="60" 
+          src="/images/help.png"
+          width="80" 
+          height="80" 
           className="d-inline-block align-top"
           alt="Logo"
         />

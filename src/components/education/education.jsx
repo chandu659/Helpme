@@ -165,7 +165,7 @@ export function Education() {
           </div>
         ))
       ) : (
-        <p>No carpooling data available.</p>
+        <p>No resources available.</p>
       )}
     </div>
   );
