@@ -8,13 +8,23 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import { createClient } from 'redis';
 import { fileURLToPath } from 'url';
+import http from 'http';
+import { Server } from 'socket.io';
 
 const app = express();
 const port = process.env.PORT || 8001; 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*", 
+    methods: ["GET", "POST"]
+  }
+});
 dotenv.config();
 
+app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 
@@ -119,7 +129,6 @@ app.get('/education', cache, async (req, res) => {
   }
 
   try {
-      // create unique for mapping and retriving 
       const cacheKey = 'education_' + (pincode ? `pincode_${pincode}` : 'all');
 
       //Get cache from redis
@@ -128,10 +137,9 @@ app.get('/education', cache, async (req, res) => {
           console.log('Serving from cache');
           return res.status(200).json(JSON.parse(cachedResults));
       }
-      // If not in cache, fetch from the database
+      
       const entries = await Form.find(query);
       if (entries.length) {
-          // Cache the database query results if not empty
           await redisClient.setEx(cacheKey, 120, JSON.stringify(entries));
           console.log('Cache miss - Data fetched from database and cached');
       }
@@ -151,7 +159,7 @@ app.post('/education/:id/comment', async (req, res) => {
   }
   formEntry.Comments.push(req.body);
   await formEntry.save();
-  return res.status(201).json(formEntry.Comments.pop());  // Send back the added comment
+  return res.status(201).json(formEntry.Comments.pop());  
 });
 
 
@@ -182,19 +190,18 @@ app.get('/carpooling', cache, async (req, res) => {
   }
 
   try {
-      // Construct a unique cache key using the query parameters
+      
       const cacheKey = 'carpooling_' + (pincode ? `pincode_${pincode}` : 'all');
 
-      // First, try to get the results from cache
       const cachedResults = await redisClient.get(cacheKey);
       if (cachedResults) {
           console.log('Serving from cache');
           return res.status(200).json(JSON.parse(cachedResults));
       }
-      // If not in cache, fetch from the database
+      
       const entries = await Form.find(query);
       if (entries.length) {
-          // Cache the database query results if not empty
+          
           await redisClient.setEx(cacheKey, 120, JSON.stringify(entries));
           console.log('Cache miss - Data fetched from database and cached');
       }
@@ -214,7 +221,7 @@ app.post('/carpooling/:id/comment', async (req, res) => {
       return res.status(404).send('Entry not found');
     }
 
-    // Push a new comment into the Comments array
+    
     formEntry.Comments.push(req.body);
     
     await formEntry.save();
@@ -236,10 +243,10 @@ app.delete('/carpooling/:postId/comment/:commentId', async (req, res) => {
       return res.status(404).send('Post not found');
     }
 
-    // Filter out the comment to be deleted
+    
     formEntry.Comments = formEntry.Comments.filter(comment => comment._id.toString() !== commentId);
 
-    // Save the updated document to permanently remove the comment
+    
     await formEntry.save();
     res.status(200).send('Comment deleted successfully');
   } catch (error) {
@@ -263,6 +270,22 @@ app.get("/file/:filename", (req, res) => {
   }
 });
 
-app.listen(port, () => {
+//soket.io implementation
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg); 
+  });
+});
+
+
+
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

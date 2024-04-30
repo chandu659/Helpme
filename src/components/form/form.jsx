@@ -47,7 +47,7 @@ const CustomForm = () => {
         (error) => {
           console.error('Error obtaining location:', error);
           alert('Could not retrieve your location. Please ensure you have given permission.');
-          setShareLocation(false); // Reset if location permission is denied
+          setShareLocation(false); 
         }
       );
     } else {
@@ -79,7 +79,7 @@ const CustomForm = () => {
       alert('Form submitted successfully!');
       setFormData(initialFormState); 
       setFile(null);
-      setShareLocation(false); // Uncheck location sharing
+      setShareLocation(false); 
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to submit form.');

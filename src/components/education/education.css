@@ -67,42 +67,42 @@ body {
   }
 
   .comment-form {
-    display: flex;  /* Align items horizontally */
-    align-items: center;  /* Vertically align items */
-    padding: 10px 20px;  /* Adjusted padding for alignment */
+    display: flex;  
+    align-items: center;  
+    padding: 10px 20px;  
     background-color: #e9e9e9;
   }
 
   .comment-form {
-  display: flex;  /* Align items horizontally */
-  align-items: center;  /* Vertically align items */
-  padding: 10px 20px;  /* Adjusted padding for alignment */
+  display: flex;  
+  align-items: center;  
+  padding: 10px 20px;  
   background-color: #e9e9e9;
 }
 
 .comment-form button {
-  padding: 4px 8px;  /* Smaller button padding */
-  font-size: 0.7em;  /* Reduced font size */
-  border-radius: 6px;  /* Slightly rounded corners */
+  padding: 4px 8px;  
+  font-size: 0.7em;  
+  border-radius: 6px;  
   background-color: #007bff; 
   color: white; 
   border: none; 
-  margin-left: 10px;  /* Space between input and button */
+  margin-left: 10px;  
   transition: background-color 0.3s; 
 }
 
 .comment-form button:hover {
-  background-color: #0056b3;  /* Change color on hover */
+  background-color: #0056b3;  
 }
 
 .delete-comment {
-  font-size: 1.2em;  /* Larger icon for better visibility */
+  font-size: 1.2em;  
   color: #cc0000; 
   background: none;
   border: none; 
   cursor: pointer;
   padding: 0;
-  margin: 0;  /* No additional space around the icon */
+  margin: 0;  
 }
 
   .comment {

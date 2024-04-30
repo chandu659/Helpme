@@ -8,6 +8,8 @@ import Tiles from './components/tiles/tiles';
 import Form from './components/form/form';
 import { Education } from './components/education/education';
 import { CarPooling } from './components/carpooling/carpooling';
+import Chatbox from './components/chatbox/chatbox'; 
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path="/form" element={<Form />} />
         <Route path="/education" element ={<Education/>}/>
         <Route path="/carpooling" element ={<CarPooling/>}/>
+        <Route path="/chatbox" element={<Chatbox />} />
       </Routes>
       <Footer />
     </>

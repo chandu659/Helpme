@@ -18,7 +18,7 @@ export function Education() {
     fetchData();
   }, []);
 
-  //filter by pincode
+  
   const handleSearch = async () => {
     try {
       const response = await axios.get(

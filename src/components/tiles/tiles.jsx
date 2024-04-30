@@ -33,6 +33,20 @@ const Tiles = () => {
           </Card>
         </Link>
       </Col>
+
+      <Col md={4} className="resource-tile">
+        <Link to="/chatbox" className="card-link">
+          <Card className="text-center">
+            <Card.Body>
+              <Card.Img variant="top" src="/images/chat.png" />
+              <Card.Title>Chat with Us!</Card.Title>
+              <Card.Text>
+                Have questions? Chat with us for real-time assistance.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Link>
+      </Col>
     </Row>
   );
 };

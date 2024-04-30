@@ -18,7 +18,7 @@ export function CarPooling() {
     fetchData();
   }, []);
 
-  //filter by pincode
+  
   const handleSearch = async () => {
     try {
       const response = await axios.get(
@@ -30,7 +30,7 @@ export function CarPooling() {
     }
   };
 
-  //
+  
   const addComment = async (postId, commentText) => {
     try {
       await axios.post(`http://localhost:8001/carpooling/${postId}/comment`, {
